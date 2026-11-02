@@ -1,41 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { site } from "../data/site";
-import {
-  dateLabel,
-  entryPath,
-  getPublishedContent,
-  groupTranslations,
-  localizedPair,
-  type ContentKind,
-  type SiteEntry,
-} from "../lib/content";
-
-const content = await getPublishedContent();
-const projectGroups = groupTranslations(content.projects);
-const writingGroups = groupTranslations(content.writing);
-const videoGroups = groupTranslations(content.videos);
-
-const hrefFor = (kind: ContentKind, entry: SiteEntry) => entryPath(kind, entry);
-const writingLabel = {
-  article: { zh: "文章", en: "Article" },
-  note: { zh: "笔记", en: "Note" },
-  log: { zh: "日志", en: "Log" },
-};
-const projectStatus = {
-  active: { zh: "进行中", en: "Active" },
-  complete: { zh: "完成", en: "Complete" },
-  archived: { zh: "归档", en: "Archived" },
-};
+import { getPublishedContent, contentIndex, homeLimit } from "../lib/content";
+import EntryList from "../components/EntryList.astro";
+const entries = contentIndex(await getPublishedContent(), true).slice(0, homeLimit);
 ---
 
 <BaseLayout>
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow"><span data-copy="zh">代码 / 笔记 / 决策</span><span data-copy="en">CODE / NOTES / DECISIONS</span></p>
+      <p class="eyebrow"><span data-copy="zh">问题 / 实验 / 音乐</span><span data-copy="en">QUESTIONS / EXPERIMENTS / MUSIC</span></p>
       <h1>
-        <span data-copy="zh">代码与思考，留在这里。</span>
-        <span data-copy="en">Code and thought, kept here.</span>
+        <span data-copy="zh">留下一些，
+          我觉得有趣的东西。</span>
+        <span data-copy="en">Things I find interesting.</span>
       </h1>
       <p class="hero-lead">
         <span data-copy="zh">{site.description.zh}</span>
@@ -44,91 +22,21 @@ const projectStatus = {
     </div>
     <aside class="hero-index">
       <img class="profile-avatar" src="/fox/clean-pose-0.png" alt="" width="144" height="144" />
-      <span><span data-copy="zh">GITHUB.IO / 个人索引</span><span data-copy="en">GITHUB.IO / PERSONAL INDEX</span></span>
+      <span><span data-copy="zh">个人空间</span><span data-copy="en">A PERSONAL SPACE</span></span>
       <strong>{site.handle}</strong>
       <a href={site.github} target="_blank" rel="noreferrer">github.com/mrShaoGu ↗</a>
     </aside>
   </section>
 
-  {projectGroups.length > 0 && <section class="content-section" id="code">
+  {entries.length > 0 && <section class="content-section" id="selected">
     <header class="section-heading">
-      <p>01 / <span data-copy="zh">代码</span><span data-copy="en">CODE</span></p>
-      <h2><span data-copy="zh">代码项目</span><span data-copy="en">Selected code</span></h2>
+      <p><span data-copy="zh">一些选择</span><span data-copy="en">A SELECTION</span></p>
+      <h2><span data-copy="zh">值得停留的东西</span><span data-copy="en">Stay a while.</span></h2>
     </header>
-    <div class="project-list">
-      {projectGroups.map((group, index) => {
-        const pair = localizedPair(group);
-        return (["zh", "en"] as const).map((locale) => {
-          const entry = pair[locale];
-          const fallback = entry.data.lang !== locale;
-          return <a class="project-card localized-card" data-ui-lang={locale} href={hrefFor("projects", entry)}>
-            <span class="project-number">{String(index + 1).padStart(2, "0")}</span>
-            <div>
-              <h3>{entry.data.title}</h3>
-              <p>{entry.data.summary}</p>
-              <div class="project-meta">
-                <span>{projectStatus[entry.data.status][locale]}</span>
-                {entry.data.stack.map((item) => <span>{item}</span>)}
-                {fallback && <span class="language-badge">{entry.data.lang === "zh" ? "中文内容" : "English only"}</span>}
-              </div>
-            </div>
-            <span class="arrow-link" aria-hidden="true">↗</span>
-          </a>;
-        });
-      })}
-    </div>
+    <EntryList entries={entries} />
   </section>}
 
-  {writingGroups.length > 0 && <section class="content-section" id="writing">
-    <header class="section-heading">
-      <p>02 / <span data-copy="zh">写作</span><span data-copy="en">WRITING</span></p>
-      <h2><span data-copy="zh">写作与记录</span><span data-copy="en">Writing & notes</span></h2>
-    </header>
-    <div class="writing-list">
-      {writingGroups.map((group) => {
-        const pair = localizedPair(group);
-        return (["zh", "en"] as const).map((locale) => {
-          const entry = pair[locale];
-          const fallback = entry.data.lang !== locale;
-          return <a class="writing-card localized-card" data-ui-lang={locale} href={hrefFor("writing", entry)}>
-            <div class="writing-card-top">
-              <div class="content-meta">
-                <span>{writingLabel[entry.data.kind][locale]}</span>
-                <span>{dateLabel(entry.data.publishedAt, locale)}</span>
-              </div>
-              {fallback && <span class="language-badge">{entry.data.lang === "zh" ? "中文内容" : "English only"}</span>}
-            </div>
-            <div>
-              <h3>{entry.data.title}</h3>
-              <p>{entry.data.summary}</p>
-            </div>
-          </a>;
-        });
-      })}
-    </div>
-  </section>}
-
-  {videoGroups.length > 0 && <section class="content-section" id="video">
-    <header class="section-heading">
-      <p>03 / <span data-copy="zh">视频</span><span data-copy="en">VIDEO</span></p>
-      <h2><span data-copy="zh">视频记录</span><span data-copy="en">Video notes</span></h2>
-    </header>
-    <div class="video-list">
-      {videoGroups.map((group) => {
-        const pair = localizedPair(group);
-        return (["zh", "en"] as const).map((locale) => {
-          const entry = pair[locale];
-          const fallback = entry.data.lang !== locale;
-          return <a class="video-card localized-card" data-ui-lang={locale} href={hrefFor("videos", entry)}>
-            <div class="content-meta"><span>BILIBILI</span>{entry.data.duration && <span>{entry.data.duration}</span>}</div>
-            <h3>{entry.data.title}</h3>
-            <p>{entry.data.summary}</p>
-            {fallback && <span class="language-badge">{entry.data.lang === "zh" ? "中文内容" : "English only"}</span>}
-          </a>;
-        });
-      })}
-    </div>
-  </section>}
+  <p class="archive-link"><a href="/archive/"><span data-copy="zh">浏览全部记录 →</span><span data-copy="en">Browse all entries →</span></a></p>
 
   <section class="about" id="about">
     <h2><span data-copy="zh">关于这里</span><span data-copy="en">About this place</span></h2>
@@ -143,12 +51,3 @@ const projectStatus = {
   </section>
 </BaseLayout>
 
-<style>
-  .localized-card { display: none; }
-  :global(:root[data-lang="zh"]) .localized-card[data-ui-lang="zh"] { display: grid; }
-  :global(:root[data-lang="en"]) .localized-card[data-ui-lang="en"] { display: grid; }
-  :global(:root[data-lang="zh"]) .writing-card[data-ui-lang="zh"] { display: flex; }
-  :global(:root[data-lang="en"]) .writing-card[data-ui-lang="en"] { display: flex; }
-  :global(:root[data-lang="zh"]) .video-card[data-ui-lang="zh"] { display: flex; }
-  :global(:root[data-lang="en"]) .video-card[data-ui-lang="en"] { display: flex; }
-</style>

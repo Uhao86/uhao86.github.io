@@ -1,42 +1,39 @@
 # 内容维护指南
 
-这个网站没有网页后台。GitHub 仓库就是唯一后台，只有拥有仓库写入权限的人可以修改公开内容。
+## 内容边界
 
-## 发布代码项目
+本站呈现自己的趣味：一个具体问题、一项实验、一段音乐，都可以独立成页。详细边界见 `docs/site-purpose.md`。
 
-1. 复制 `templates/project.md` 到 `src/content/projects/`。
-2. 文件名建议使用 `project-key.zh.md` 或 `project-key.en.md`。
-3. 填写真实仓库地址、技术栈、状态和正文。
-4. 将 `draft` 改成 `false` 后提交。
-5. 第一个真实项目发布后，首页才会出现“代码”板块和导航入口。
+目录是维护时的载体区分，不对应首页栏目：`projects` 保存实验与作品，`writing` 保存思考，`videos` 保存影像，`music` 保存音乐。
 
-## 发布写作
+## 新增与发布
 
-1. 复制 `templates/writing.md` 到 `src/content/writing/`。
-2. `kind` 可选 `article`、`note` 或 `log`。
-3. 将 `draft` 改成 `false` 后提交。
+1. 从 `templates/` 复制对应模板到 `src/content/projects/`、`writing/` 、`music/` 或 `videos/`。
+2. 文件命名为 `主题.zh.md` 或 `主题.en.md`，填写字段及真实内容。项目需仓库链接，视频需 Bilibili 链接。
+3. 保持 `draft: true` 时不公开。准备好后改为 `false`，即进入全部记录并生成详情页。
+4. 只有希望首页推荐的内容才设置 `featured: true`。首页所有形式合计最多 6 条，超出按发布日期取最新；翻译版本合计为一条。未入选内容仍在归档中可见。
+5. 运行 `npm run build`，用 `npm run dev` 检查首页、归档和正文，再提交发布。
 
-## 发布视频
+首页内容少时允许留白，不用占位文章填充。下架推荐只改 `featured`；撤下公开内容才改 `draft`，这会使原详情链接失效。
 
-1. 先把视频发布到 Bilibili。
-2. 复制 `templates/video.md` 到 `src/content/videos/`。
-3. 填写 Bilibili 地址，不要把视频文件放入仓库。
-4. 将 `draft` 改成 `false` 后提交。
+## 正文写什么
 
-## 可选翻译
+- 项目：为什么做 → 当前做到哪里 → 一个关键选择 → 结果或局限 → 仓库／演示。
+- 写作：一个具体问题 → 尝试或依据 → 当前判断 → 尚未解决的部分。
+- 视频：视频链接 → 记录的事情 → 值得关注的片段或补充说明。
 
-同一内容的中英文版本使用相同的 `translationKey`，但分别设置 `lang: zh` 和 `lang: en`。只发布一个语言也完全有效；网站会保留原文并显示语言标记。
+## 翻译与地址
 
-## 修改个人资料
+同一内容的中英文使用相同 `translationKey`，分别设置 `lang`。只发布一种语言也有效，另一界面显示原文及语言提示。推荐任意一个语言版本即可推荐整组。
 
-编辑 `src/data/site.ts`：
+已发布后尽量保持 `slug` 和集合不变，避免破坏链接。修订正文更新 `updatedAt`，不要通过修改 `publishedAt` 人为置顶。
 
-- `handle`：站点显示名称。
-- `github`：GitHub 地址。
-- `email`：留空则不显示邮箱。
-- `bilibili`：留空则不显示 Bilibili 入口。
-- `description` 和 `introduction`：首页中英文介绍。
+## 个人信息与外观
 
-## 本机检查
+个人资料统一编辑 `src/data/site.ts`，Email、Bilibili 留空则隐藏。布局、配色等维护入口见 README。此站没有网页后台，仓库是内容源。
 
-运行 `npm install`，然后运行 `npm run dev` 预览。提交到 `main` 分支后，GitHub Actions 会自动构建并发布。
+## 音乐
+
+复制 `templates/music.md` 到 `src/content/music/`。填写作者 `artist`、真实来源 `sourceUrl` 和选择理由；不需要先上传音频就能发布。
+
+有自己创作或已获授权的音频时，放入 `public/media/`，填写 `audio: /media/文件名.mp3`，或使用可直接访问的 HTTPS 音频地址。网页链接请填入来源字段。播放器由访客主动启动，不自动播放，不跨页持续播放。二进制文件大小应适合静态站托管。

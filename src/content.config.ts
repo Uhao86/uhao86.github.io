@@ -45,4 +45,14 @@ const videos = defineCollection({
   }),
 });
 
-export const collections = { projects, writing, videos };
+const music = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/music" }),
+  schema: z.object({
+    ...base,
+    artist: z.string().min(1),
+    sourceUrl: z.url(),
+    audio: z.string().regex(/^(https:\/\/|\/(?!\/))/, "Use an HTTPS URL or a local /media/ path").optional(),
+  }),
+});
+
+export const collections = { projects, writing, videos, music };

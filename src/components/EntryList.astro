@@ -1,0 +1,23 @@
+---
+import { entryPath, dateLabel, kindLabels, type contentIndex } from "../lib/content";
+interface Props { entries: ReturnType<typeof contentIndex>; }
+const { entries } = Astro.props;
+---
+<div class="entry-list">
+  {entries.map(({ kind, pair }) => (["zh", "en"] as const).map((locale) => {
+    const entry = pair[locale];
+    return <article data-copy={locale}>
+      <p class="content-meta">{kindLabels[kind][locale]} · {dateLabel(entry.data.publishedAt, locale)}{entry.data.lang !== locale && (locale === "zh" ? " · 英文原文" : " · Chinese original")}</p>
+      <h3><a href={entryPath(kind, entry)}>{entry.data.title} <span aria-hidden="true">↗</span></a></h3>
+      <p class="entry-summary">{entry.data.summary}</p>
+    </article>;
+  }))}
+</div>
+<style>
+  .entry-list article { padding: 30px 0; border-bottom: 1px solid var(--line); }
+  .entry-list h3 { margin: 16px 0; font: 450 clamp(28px, 4vw, 48px)/1.2 var(--font-display); }
+  .entry-summary { max-width: 690px; color: var(--muted); }
+  .entry-list a:hover { color: var(--signal); }
+  :global(:root[data-lang="zh"]) article[data-copy="zh"],
+  :global(:root[data-lang="en"]) article[data-copy="en"] { display: block; }
+</style>

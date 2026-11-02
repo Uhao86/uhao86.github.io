@@ -164,3 +164,6 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--focus); outline
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+.music-player { padding-top: 24px; }
+.music-player audio { display: block; width: 100%; }

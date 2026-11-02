@@ -3,6 +3,7 @@ import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import {
   dateLabel,
+  kindLabels,
   entryPath,
   routeSegment,
   type ContentKind,
@@ -15,8 +16,9 @@ export async function getStaticPaths() {
     getCollection("projects", ({ data }) => !data.draft),
     getCollection("writing", ({ data }) => !data.draft),
     getCollection("videos", ({ data }) => !data.draft),
+    getCollection("music", ({ data }) => !data.draft),
   ]);
-  const kinds: ContentKind[] = ["projects", "writing", "videos"];
+  const kinds: ContentKind[] = ["projects", "writing", "videos", "music"];
   const all = collections.flatMap((entries, index) => entries.map((entry) => ({ entry, kind: kinds[index] })));
 
   return all.map(({ entry, kind }) => {
@@ -43,11 +45,7 @@ const { Content } = await render(entry);
 const locale = entry.data.lang as Locale;
 const projectData = kind === "projects" ? (entry as CollectionEntry<"projects">).data : null;
 const videoData = kind === "videos" ? (entry as CollectionEntry<"videos">).data : null;
-const kindLabels = {
-  projects: { zh: "代码项目", en: "Code project" },
-  writing: { zh: "写作", en: "Writing" },
-  videos: { zh: "视频", en: "Video" },
-};
+const musicData = kind === "music" ? (entry as CollectionEntry<"music">).data : null;
 ---
 
 <BaseLayout
@@ -70,9 +68,11 @@ const kindLabels = {
       <div class="external-actions">
         {projectData && <a href={projectData.repo} target="_blank" rel="noreferrer">GitHub ↗</a>}
         {projectData?.demo && <a href={projectData.demo} target="_blank" rel="noreferrer">Demo ↗</a>}
+        {musicData && <a href={musicData.sourceUrl} target="_blank" rel="noreferrer">{locale === "zh" ? "作品来源" : "Source"} ↗</a>}
         {videoData && <a href={videoData.bilibiliUrl} target="_blank" rel="noreferrer">Bilibili ↗</a>}
       </div>
     </header>
+    {musicData && <section class="music-player" aria-label={locale === "zh" ? "音乐作品" : "Music"}><p>{musicData.artist}</p>{musicData.audio && <audio controls preload="none" src={musicData.audio}><a href={musicData.sourceUrl}>{locale === "zh" ? "前往收听" : "Listen at source"}</a></audio>}</section>}
     <div class="prose"><Content /></div>
   </article>
 </BaseLayout>

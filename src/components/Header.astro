@@ -1,5 +1,4 @@
 ---
-import { getPublishedContent } from "../lib/content";
 import { site } from "../data/site";
 
 interface Props {
@@ -8,10 +7,6 @@ interface Props {
 }
 
 const { contentLang, translations = {} } = Astro.props;
-const content = await getPublishedContent();
-const hasProjects = content.projects.length > 0;
-const hasWriting = content.writing.length > 0;
-const hasVideos = content.videos.length > 0;
 ---
 
 <header class="site-header">
@@ -23,9 +18,7 @@ const hasVideos = content.videos.length > 0;
   </a>
 
   <nav class="site-nav" aria-label="Primary navigation">
-    {hasProjects && <a href="/#code"><span data-copy="zh">代码</span><span data-copy="en">Code</span></a>}
-    {hasWriting && <a href="/#writing"><span data-copy="zh">写作</span><span data-copy="en">Writing</span></a>}
-    {hasVideos && <a href="/#video"><span data-copy="zh">视频</span><span data-copy="en">Video</span></a>}
+    <a href="/archive/"><span data-copy="zh">全部记录</span><span data-copy="en">Archive</span></a>
     <a href="/#about"><span data-copy="zh">关于</span><span data-copy="en">About</span></a>
   </nav>
 

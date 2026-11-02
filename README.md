@@ -1,24 +1,39 @@
-# mrShaoGu.github.io
+# mrShaoGu 的个人站
 
-一个静态优先的个人技术站：用代码项目呈现技术实践，用写作呈现思考过程。
+核心目标：呈现自己的趣味。定位与取舍见 [site-purpose.md](./docs/site-purpose.md)。
 
-## 内容结构
+## 页面结构
 
-- `src/content/projects/`：经过选择和解释的代码项目。
-- `src/content/writing/`：文章、笔记和开发日志。
-- `src/content/videos/`：Bilibili 视频索引。
-- `src/data/site.ts`：个人介绍与外部链接。
-- `templates/`：新增内容时复制使用的模板。
-- `DESIGN.md`：字体、颜色、间距与组件角色的设计令牌和使用原则。
+- 首页：统一精选（最多 6 条，包含思考、实验、音乐和影像），以及个人介绍。
+- 全部记录 `/archive/`：所有已发布项目、写作、音乐和视频，按时间排列。
+- 详情页：完整正文与相关外部链接。已有内容 URL 保持不变。
 
-没有真实公开内容的板块不会出现在首页或导航中。网站始终提供中英文界面和明暗主题；正文翻译可选。
+发布与首页推荐分开：`draft: false` 才会公开；`featured: true` 才有资格进入首页。推荐过多时按发布日期取最新的条目，中英文合计占一个位置。所有内容形式都可以参与精选。
 
-详细操作见 [CONTENT_GUIDE.md](./CONTENT_GUIDE.md)。
+## 修改入口
 
-## 设计检查
+| 要修改什么 | 唯一入口 |
+| --- | --- |
+| 名称、个人介绍、外部账号 | `src/data/site.ts` |
+| 正文、摘要、发布与推荐状态 | `src/content/` |
+| 首页推荐数量、筛选与排序 | `src/lib/content.ts` |
+| 内容字段与校验 | `src/content.config.ts` |
+| 首页布局 | `src/pages/index.astro` |
+| 全部记录布局 | `src/pages/archive.astro` |
+| 详情页布局 | `src/pages/[lang]/[collection]/[slug].astro` |
+| 导航和页脚 | `src/components/` |
+| 全站外观与设计约定 | `src/styles/global.css`、`DESIGN.md` |
 
-字体与视觉规则采用 Google Labs 的 `DESIGN.md` 格式，并在每次构建前自动校验：
+`dist/`、`.astro/` 和 `node_modules/` 是生成结果，不手动维护。
+
+新增内容、分类边界和发布步骤见 [CONTENT_GUIDE.md](./CONTENT_GUIDE.md)。
+
+## 本机验证
 
 ```sh
-npm run design:lint
+npm install
+npm run dev
+npm run build
 ```
+
+构建会检查设计规则、Astro 类型并生成静态页面。推送到 main 后由 GitHub Actions 发布。

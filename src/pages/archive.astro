@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EntryList from "../components/EntryList.astro";
+import { getPublishedContent, contentIndex } from "../lib/content";
+const entries = contentIndex(await getPublishedContent());
+---
+<BaseLayout>
+  <main class="article-shell">
+    <header class="article-header">
+      <h1><span data-copy="zh">全部记录</span><span data-copy="en">Archive</span></h1>
+      <p><span data-copy="zh">问题、实验、音乐与影像，按时间留在这里。</span><span data-copy="en">Questions, experiments, music and moving images, in chronological order.</span></p>
+    </header>
+    {entries.length === 0 && <p><span data-copy="zh">还没有公开的记录。</span><span data-copy="en">No published entries yet.</span></p>}
+    <EntryList entries={entries} />
+  </main>
+</BaseLayout>
