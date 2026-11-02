@@ -9,22 +9,26 @@ const entries = contentIndex(await getPublishedContent(), true).slice(0, homeLim
 <BaseLayout>
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow"><span data-copy="zh">问题 / 实验 / 音乐</span><span data-copy="en">QUESTIONS / EXPERIMENTS / MUSIC</span></p>
-      <h1>
+      <p class="eyebrow reveal" style="--d:0ms"><span data-copy="zh">问题 / 实验 / 音乐</span><span data-copy="en">QUESTIONS / EXPERIMENTS / MUSIC</span></p>
+      <h1 class="reveal" style="--d:80ms">
         <span data-copy="zh">留下一些，
           我觉得有趣的东西。</span>
         <span data-copy="en">Things I find interesting.</span>
       </h1>
-      <p class="hero-lead">
+      <p class="hero-lead reveal" style="--d:170ms">
         <span data-copy="zh">{site.description.zh}</span>
         <span data-copy="en">{site.description.en}</span>
       </p>
+      <nav class="hero-links reveal" style="--d:250ms">
+        <a href={site.github} target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a href="/archive/"><span data-copy="zh">全部记录</span><span data-copy="en">Archive</span> →</a>
+      </nav>
     </div>
-    <aside class="hero-index">
+    <aside class="hero-index reveal" style="--d:140ms">
       <img class="profile-avatar" src="/fox/clean-pose-0.png" alt="" width="144" height="144" />
       <span><span data-copy="zh">个人空间</span><span data-copy="en">A PERSONAL SPACE</span></span>
       <strong>{site.handle}</strong>
-      <a href={site.github} target="_blank" rel="noreferrer">github.com/mrShaoGu ↗</a>
+      <a class="hero-handle" href={site.github} target="_blank" rel="noreferrer">@{site.handle} ↗</a>
     </aside>
   </section>
 
@@ -35,8 +39,6 @@ const entries = contentIndex(await getPublishedContent(), true).slice(0, homeLim
     </header>
     <EntryList entries={entries} />
   </section>}
-
-  <p class="archive-link"><a href="/archive/"><span data-copy="zh">浏览全部记录 →</span><span data-copy="en">Browse all entries →</span></a></p>
 
   <section class="about" id="about">
     <h2><span data-copy="zh">关于这里</span><span data-copy="en">About this place</span></h2>
@@ -50,4 +52,3 @@ const entries = contentIndex(await getPublishedContent(), true).slice(0, homeLim
     </div>
   </section>
 </BaseLayout>
-

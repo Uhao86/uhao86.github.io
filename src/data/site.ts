@@ -1,6 +1,6 @@
 export const site = {
-  handle: "Uhao86",
-  github: "https://github.com/Uhao86",
+  handle: "Shao",
+  github: "https://github.com/mrShaoGu",
   email: "",
   bilibili: "",
   description: {

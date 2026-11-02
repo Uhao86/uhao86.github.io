@@ -167,3 +167,46 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--focus); outline
 
 .music-player { padding-top: 24px; }
 .music-player audio { display: block; width: 100%; }
+
+/* ---- 入场与微动效 ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: rise .72s cubic-bezier(.22, .7, .2, 1) forwards;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 46px; }
+.hero-links a {
+  padding: 12px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: 560 13px/1 var(--font-label);
+  letter-spacing: .01em;
+  transition: border-color .25s ease, background .25s ease, transform .25s ease;
+}
+.hero-links a:hover { border-color: var(--ink); background: var(--paper-soft); transform: translateY(-2px); }
+
+.hero-handle {
+  position: relative;
+  transition: opacity .2s ease;
+}
+.hero-handle:hover { opacity: .62; }
+
+.profile-avatar { animation: drift 7s ease-in-out infinite; }
+@keyframes drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* 滚动进入（支持的浏览器才启用，其余保持静态） */
+@supports (animation-timeline: view()) {
+  .content-section, .about {
+    animation: rise .9s linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
