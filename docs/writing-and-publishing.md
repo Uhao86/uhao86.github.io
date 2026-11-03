@@ -20,7 +20,9 @@ gh auth status
 gh run list --repo Uhao86/uhao86.github.io --workflow deploy.yml --limit 3
 ```
 
-只在一个条件满足时开播：最近一次 `Deploy to GitHub Pages` 是绿色。否则先修部署。
+只有最近一次 `Deploy to GitHub Pages` 是绿色才开播，否则先修部署。
+
+构建日志里出现 `projects`、`videos`、`music` 集合为空是提示，不是失败：这三类目前还没有内容。
 
 再开一个终端保持预览：
 
@@ -144,11 +146,13 @@ curl -fsS -o /dev/null -w '%{http_code}\n' https://uhao86.github.io/zh/writing/f
 - `check.yml` 的 `guard` 任务会拒绝非 `Uhao86` 的 PR 修改 `.github/`、`astro.config.mjs`、`package.json`、`package-lock.json`、`src/content.config.ts`、`src/data/site.ts`。
 - `.github/CODEOWNERS` 把这些路径的评审指向 `Uhao86`。
 
-这些是“检查”和“默认拒绝”，不是硬锁。要让它们真正生效，需要在 `main` 上启用分支保护或规则集：要求 PR、要求 `Check site / build` 和 `guard` 通过、要求 Code Owner 评审。不要给 `mrShaoGu` 写权限；如果以后让 agent 代写，让它推分支并开 PR，不要直接推 `main`。把 `pull_request_target` 用在会 checkout PR 代码的仓库上是危险的，这里不使用。
+这些是“检查”和“默认拒绝”，不是硬锁。要让它们真正生效，需要在 `main` 上启用分支保护或规则集：要求 PR、要求 `Check site / build` 通过、要求 Code Owner 评审。`guard` 作为非本人 PR 的额外拒绝项，是否设为必需检查可以按 GitHub 对 skipped job 的处理再定。不要给 `mrShaoGu` 写权限；如果以后让 agent 代写，让它推分支并开 PR，不要直接推 `main`。把 `pull_request_target` 用在会 checkout PR 代码的仓库上是危险的，这里不使用。
 
 ## 一次性配置记录
 
 - 本机 `origin`：`https://github.com/Uhao86/uhao86.github.io.git`。
 - 本机提交身份：`Uhao86 <bahexiansheng5463@agent.qq.com>`。
+- `gh-agent` 的 Uhao86 token 已包含 `workflow` scope；否则无法提交 `.github/workflows/`。撤销该 scope 后，工作流文件将无法推送。
 - Pages Source：GitHub Actions。
+- 部署环境 `github-pages` 只允许 `main` 分支部署。
 - 构建 Node：24。
