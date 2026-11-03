@@ -116,9 +116,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--focus); outline
 .article-shell { max-width: 800px; margin: 0 auto; padding: 90px 0 130px; }
 .article-back { color: var(--muted); font-family: var(--font-label); font-size: 12px; font-weight: 520; }
 .article-header { padding: 70px 0 48px; border-bottom: 1px solid var(--line); }
-.article-header h1 { margin: 18px 0 24px; font: 450 clamp(46px, 7vw, 82px)/.97 var(--font-display); font-optical-sizing: auto; letter-spacing: -.04em; }
+.article-header h1 { margin: 18px 0 24px; font: 450 clamp(46px, 7vw, 82px)/.97 var(--font-display); font-optical-sizing: auto; letter-spacing: -.04em; text-wrap: balance; }
 .article-header p { color: var(--muted); font-size: 18px; font-weight: 390; line-height: 1.68; }
-.prose { padding-top: 46px; font-size: 17px; font-weight: 390; line-height: 1.82; letter-spacing: -.006em; }
+.prose { padding-top: 46px; font-size: 17px; font-weight: 390; line-height: 1.82; letter-spacing: -.006em; overflow-wrap: break-word; }
 .prose h2, .prose h3 { margin: 2.2em 0 .7em; font-family: var(--font-display); font-weight: 470; font-optical-sizing: auto; line-height: 1.16; letter-spacing: -.02em; }
 .prose h2 { font-size: 2em; }.prose h3 { font-size: 1.45em; }
 .prose a { color: var(--signal); border-bottom: 1px solid currentColor; }

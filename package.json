@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "node -e \"require('node:fs').rmSync('node_modules/.astro',{recursive:true,force:true})\"",
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "build": "npm run design:lint && ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
