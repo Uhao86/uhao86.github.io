@@ -1,0 +1,7 @@
+# Deployment and site configuration require the owner's review.
+/.github/               @Uhao86
+/astro.config.mjs       @Uhao86
+/package.json           @Uhao86
+/package-lock.json      @Uhao86
+/src/content.config.ts  @Uhao86
+/src/data/site.ts       @Uhao86

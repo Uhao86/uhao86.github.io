@@ -36,4 +36,4 @@ npm run dev
 npm run build
 ```
 
-构建会检查设计规则、Astro 类型并生成静态页面。推送到 main 后由 GitHub Actions 发布。
+构建会检查设计规则、Astro 类型并生成静态页面。推送到 `main` 后由 [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) 构建并发布到 GitHub Pages；Pages 的 Source 需要是 GitHub Actions。直播写作与发布流程见 [docs/writing-and-publishing.md](./docs/writing-and-publishing.md)。

@@ -37,3 +37,11 @@
 复制 `templates/music.md` 到 `src/content/music/`。填写作者 `artist`、真实来源 `sourceUrl` 和选择理由；不需要先上传音频就能发布。
 
 有自己创作或已获授权的音频时，放入 `public/media/`，填写 `audio: /media/文件名.mp3`，或使用可直接访问的 HTTPS 音频地址。网页链接请填入来源字段。播放器由访客主动启动，不自动播放，不跨页持续播放。二进制文件大小应适合静态站托管。
+
+## 公式、表格与图片
+
+正文支持 KaTeX：行内 `$...$`，独立公式 `$$...$$`；不要使用 `\(...\)`。表格使用 GFM 管道语法，公式里的竖线写成 `\|`。图片放 `public/images/`，正文用站内绝对路径引用。完整规范见 [写作与发布](./docs/writing-and-publishing.md)。
+
+## 文章解读与直播发布
+
+使用 `templates/reading.md`；完整的本地预览、图片规范、写作注意事项和目标仓库推送步骤见 [写作与发布](./docs/writing-and-publishing.md)。开发模式可以预览草稿，正式构建排除草稿。
