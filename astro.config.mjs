@@ -1,7 +1,18 @@
 import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 
 export default defineConfig({
   site: "https://uhao86.github.io",
   output: "static",
   trailingSlash: "always",
+  markdown: {
+    processor: unified({
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [
+        [rehypeKatex, { throwOnError: false, strict: false, output: "htmlAndMathml" }],
+      ],
+    }),
+  },
 });

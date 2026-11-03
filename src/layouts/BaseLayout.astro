@@ -6,6 +6,7 @@ import "@fontsource-variable/newsreader/opsz-italic.css";
 import "@fontsource-variable/public-sans";
 import "@fontsource-variable/public-sans/wght-italic.css";
 import "@fontsource-variable/space-grotesk";
+import "katex/dist/katex.min.css";
 import "../styles/global.css";
 import { site } from "../data/site";
 
@@ -53,7 +54,7 @@ const socialImage = image ? new URL(image, Astro.site) : new URL("/og.png", Astr
         const savedTheme = localStorage.getItem("site-theme");
         const savedLang = localStorage.getItem("site-language");
         const theme = savedTheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-        const lang = contentLang || savedLang || (navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en");
+        const lang = savedLang || contentLang || (navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en");
         document.documentElement.dataset.theme = theme;
         document.documentElement.dataset.lang = lang;
         document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";

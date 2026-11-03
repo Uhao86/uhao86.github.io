@@ -18,17 +18,9 @@
       if (target && contentLanguage !== next) {
         localStorage.setItem("site-language", next);
         window.location.href = target;
-      } else if (!target) {
-        languageButton.animate(
-          [
-            { transform: "translateX(0)" },
-            { transform: "translateX(-2px)" },
-            { transform: "translateX(2px)" },
-            { transform: "translateX(0)" },
-          ],
-          { duration: 220, easing: "ease-out" },
-        );
+        return;
       }
+      applyLanguage(next);
       return;
     }
 
