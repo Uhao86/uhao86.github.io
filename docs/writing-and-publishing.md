@@ -110,7 +110,7 @@ git commit -m "Publish first reading"
 git push origin main
 ```
 
-`origin` 现在就是 `Uhao86/uhao86.github.io`，可以直接 `git push`。旧的 mrShaoGu 远端已经清理，不要改回去。
+`origin` 现在就是 `Uhao86/uhao86.github.io`，可以直接 `git push`。旧的远端已经清理，不要改回去。
 
 4. 等部署并验证：
 
@@ -135,18 +135,18 @@ curl -fsS -o /dev/null -w '%{http_code}\n' https://uhao86.github.io/zh/writing/f
 | 发布错了 | 优先 `git revert <commit>` 再推送，保留历史；不要强推 `main`。 |
 | 想撤下文章 | 把 `draft` 改回 `true` 再推送；不要删除正文。 |
 
-## 隔离 mrShaoGu 的影响：工作流能做什么，不能做什么
+## 部署权限边界：工作流能做什么，不能做什么
 
 工作流负责“谁可以构建、谁可以发布”，它不能替代账号权限。当前仓库的实际边界是：
 
-- 协作者只有 `Uhao86`；`mrShaoGu` 不是仓库协作者，不能直接推送或改 Pages 设置。
+- 协作者只有 `Uhao86`；其他账号不是仓库协作者，不能直接推送或改 Pages 设置。
 - `deploy.yml` 只在 `main` 推送或手动触发时运行；PR 工作流 `check.yml` 没有部署权限。
 - `deploy.yml` 带 `if: github.repository == 'Uhao86/uhao86.github.io'`，仓库改名或 fork 不会误部署。
 - 部署使用 `GITHUB_TOKEN` 的最小权限（`contents: read`、`pages: write`、`id-token: write`），不保存长期部署密钥。
 - `check.yml` 的 `guard` 任务会拒绝非 `Uhao86` 的 PR 修改 `.github/`、`astro.config.mjs`、`package.json`、`package-lock.json`、`src/content.config.ts`、`src/data/site.ts`。
 - `.github/CODEOWNERS` 把这些路径的评审指向 `Uhao86`。
 
-这些是“检查”和“默认拒绝”，不是硬锁。要让它们真正生效，需要在 `main` 上启用分支保护或规则集：要求 PR、要求 `Check site / build` 通过、要求 Code Owner 评审。`guard` 作为非本人 PR 的额外拒绝项，是否设为必需检查可以按 GitHub 对 skipped job 的处理再定。不要给 `mrShaoGu` 写权限；如果以后让 agent 代写，让它推分支并开 PR，不要直接推 `main`。把 `pull_request_target` 用在会 checkout PR 代码的仓库上是危险的，这里不使用。
+这些是“检查”和“默认拒绝”，不是硬锁。要让它们真正生效，需要在 `main` 上启用分支保护或规则集：要求 PR、要求 `Check site / build` 通过、要求 Code Owner 评审。`guard` 作为非本人 PR 的额外拒绝项，是否设为必需检查可以按 GitHub 对 skipped job 的处理再定。不要给其他账号写权限；如果以后让 agent 代写，让它推分支并开 PR，不要直接推 `main`。把 `pull_request_target` 用在会 checkout PR 代码的仓库上是危险的，这里不使用。
 
 ## 一次性配置记录
 
