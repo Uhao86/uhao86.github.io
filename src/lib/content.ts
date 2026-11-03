@@ -11,12 +11,16 @@ export const routeSegment: Record<ContentKind, string> = {
   music: "music",
 };
 
+export function isVisibleContent({ data }: { data: { draft: boolean } }) {
+  return import.meta.env.DEV || !data.draft;
+}
+
 export async function getPublishedContent() {
   const [projects, writing, videos, music] = await Promise.all([
-    getCollection("projects", ({ data }) => !data.draft),
-    getCollection("writing", ({ data }) => !data.draft),
-    getCollection("videos", ({ data }) => !data.draft),
-    getCollection("music", ({ data }) => !data.draft),
+    getCollection("projects", isVisibleContent),
+    getCollection("writing", isVisibleContent),
+    getCollection("videos", isVisibleContent),
+    getCollection("music", isVisibleContent),
   ]);
 
   const byDate = <T extends SiteEntry>(entries: T[]) =>

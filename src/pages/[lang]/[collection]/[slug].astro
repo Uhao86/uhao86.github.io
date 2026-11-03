@@ -3,6 +3,7 @@ import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import {
   dateLabel,
+  isVisibleContent,
   kindLabels,
   entryPath,
   routeSegment,
@@ -13,10 +14,10 @@ import {
 
 export async function getStaticPaths() {
   const collections = await Promise.all([
-    getCollection("projects", ({ data }) => !data.draft),
-    getCollection("writing", ({ data }) => !data.draft),
-    getCollection("videos", ({ data }) => !data.draft),
-    getCollection("music", ({ data }) => !data.draft),
+    getCollection("projects", isVisibleContent),
+    getCollection("writing", isVisibleContent),
+    getCollection("videos", isVisibleContent),
+    getCollection("music", isVisibleContent),
   ]);
   const kinds: ContentKind[] = ["projects", "writing", "videos", "music"];
   const all = collections.flatMap((entries, index) => entries.map((entry) => ({ entry, kind: kinds[index] })));
@@ -58,6 +59,7 @@ const musicData = kind === "music" ? (entry as CollectionEntry<"music">).data : 
   <article class="article-shell">
     <a class="article-back" href="/">← <span data-copy="zh">返回首页</span><span data-copy="en">Back home</span></a>
     <header class="article-header">
+      {entry.data.draft && <p class="draft-note" role="status">本地草稿预览 · 正式构建不会发布此页</p>}
       <div class="content-meta">
         <span>{kindLabels[kind][locale]}</span>
         <span>{dateLabel(entry.data.publishedAt, locale)}</span>
